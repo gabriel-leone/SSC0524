@@ -1,17 +1,9 @@
 package org.gabrielleone;
 
 public class Boliche {
-    public int computaPlacar(String jogadas) {
+    public int computaPlacar(String jogadas) throws IllegalArgumentException {
 
-        if (jogadas.length() != 21) {
-            throw new IllegalArgumentException("Quantidade de jogadas inválida");
-        }
-
-        for (int i = 0; i < jogadas.length(); i++) {
-            if (jogadas.charAt(i) != 'X' && jogadas.charAt(i) != '/' && jogadas.charAt(i) != '-' && !Character.isDigit(jogadas.charAt(i))) {
-                throw new IllegalArgumentException("Caracter inválido");
-            }
-        }
+        VerificaInput(jogadas);
 
         int pontuacao = 0;
         for (int i = 0; i < 20; i++) {
@@ -24,6 +16,19 @@ public class Boliche {
             }
         }
         return pontuacao;
+    }
+
+    private void VerificaInput(String jogadas) {
+        if (jogadas.length() != 21) {
+            throw new IllegalArgumentException("Quantidade de jogadas inválida");
+        }
+
+        for (int i = 0; i < jogadas.length(); i++) {
+            if (jogadas.charAt(i) != 'X' && jogadas.charAt(i) != '/' && jogadas.charAt(i) != '-'
+                    && !Character.isDigit(jogadas.charAt(i))) {
+                throw new IllegalArgumentException("Caracter inválido");
+            }
+        }
     }
 
     private int CalculaStrike(String jogadas, int jogadaAtual) {
