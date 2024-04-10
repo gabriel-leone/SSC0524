@@ -19,21 +19,18 @@ public class TesteJan1 {
 
     @Test
     public void testJan2023() {
-        assertEquals(0, myCal.jan1(2023));
-    }
-
-    @Test
-    public void testJan2000() {
         assertEquals(6, myCal.jan1(2000));
     }
 
     @Test
-    public void testJan1900() {
-        assertEquals(1, myCal.jan1(1900));
-    }
+    public void testJan1790() { assertEquals(5, myCal.jan1(1790)); }
 
     @Test
-    public void testJan2004() {
-        assertEquals(4, myCal.jan1(2004));
-    }
+    public void testJan1752() { assertEquals(3, myCal.jan1(1752)); }
+
+    @Test
+    public void testJan1700() { assertEquals(1, myCal.jan1(1700)); }
+
+    @Test
+    public void testJan1500() { assertEquals(3, myCal.jan1(1500)); }
 }

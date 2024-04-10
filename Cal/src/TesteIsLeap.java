@@ -42,4 +42,19 @@ public class TesteIsLeap {
     public void testIsLeap1752() {
         assertTrue(myCal.isLeap(1752));
     }
+
+    @Test
+    public void testIsLeap1700() {
+        assertTrue(myCal.isLeap(1700));
+    }
+
+    @Test
+    public void testIsLeap1600() {
+        assertTrue(myCal.isLeap(1600));
+    }
+
+    @Test
+    public void testIsLeap1500() {
+        assertTrue(myCal.isLeap(1500));
+    }
 }

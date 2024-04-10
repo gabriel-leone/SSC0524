@@ -41,4 +41,22 @@ public class TesteCal {
                 "24 25 26 27 28 29 30\n" +
                 "31".trim(), maioCal.trim());
     }
+
+    @Test
+    public void testCalFevereiro() {
+        var fevereiroCal = myCal.cal(2, 28);
+        assertEquals("1  2  3  4  5\n"+
+                " 6  7  8  9 10 11 12\n"+
+                "13 14 15 16 17 18 19\n"+
+                "20 21 22 23 24 25 26\n"+
+                "27 28".trim(), fevereiroCal.trim());
+    }
+
+    @Test
+    public void testCal19Dias() {
+        var cal19Dias = myCal.cal(1, 19);
+        assertEquals("1  2 14 15 16\n"+
+                "17 18 19 20 21 22 23\n"+
+                "24 25 26 27 28 29 30".trim(), cal19Dias.trim());
+    }
 }

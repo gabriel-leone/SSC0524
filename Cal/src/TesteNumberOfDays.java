@@ -23,17 +23,13 @@ public class TesteNumberOfDays {
     }
 
     @Test
-    public void testNumberOfDaysMaio2009() {
-        assertEquals(31, myCal.numberOfDays(5, 2009));
-    }
-
-    @Test
     public void testNumberOfDaysFevereiro2024() {
         assertEquals(29, myCal.numberOfDays(2, 2024));
     }
 
     @Test
-    public void testNumberOfDaysFevereiro2023() {
-        assertEquals(28, myCal.numberOfDays(2, 2023));
-    }
+    public void testNumberOfDaysFevereiro2023() { assertEquals(28, myCal.numberOfDays(2, 2023)); }
+
+    @Test
+    public void testNumberOfDaysSetembro1752() { assertEquals(19, myCal.numberOfDays(9, 1752)); }
 }
