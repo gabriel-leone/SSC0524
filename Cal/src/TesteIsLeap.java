@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Nome: Enzo Vasconcellos Pagotto, NºUSP: 13632844
+// Nome: Gabriel Pietro Leone, NºUSP: 13874729
+
 public class TesteIsLeap {
 
     private Cal myCal;  // Declare myCal here
@@ -56,5 +59,10 @@ public class TesteIsLeap {
     @Test
     public void testIsLeap1500() {
         assertTrue(myCal.isLeap(1500));
+    }
+
+    @Test
+    public void testIsLeap1301() {
+        assertFalse(myCal.isLeap(1301));
     }
 }

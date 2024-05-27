@@ -1,6 +1,9 @@
 
 import java.util.*;
 
+// Nome: Enzo Vasconcellos Pagotto, NºUSP: 13632844
+// Nome: Gabriel Pietro Leone, NºUSP: 13874729
+
 public class Cal {
 
 static String  dayw = "Do Se Te Qa Qi Se Sa";

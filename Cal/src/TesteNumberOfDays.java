@@ -3,6 +3,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// Nome: Enzo Vasconcellos Pagotto, NºUSP: 13632844
+// Nome: Gabriel Pietro Leone, NºUSP: 13874729
+
 public class TesteNumberOfDays {
 
     private Cal myCal;  // Declare myCal here
@@ -32,4 +35,6 @@ public class TesteNumberOfDays {
 
     @Test
     public void testNumberOfDaysSetembro1752() { assertEquals(19, myCal.numberOfDays(9, 1752)); }
+
+    @Test void testNumberOfDaysOutubro1752() { assertEquals(31, myCal.numberOfDays(10, 1752)); }
 }

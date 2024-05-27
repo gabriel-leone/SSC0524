@@ -3,6 +3,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Nome: Enzo Vasconcellos Pagotto, NºUSP: 13632844
+// Nome: Gabriel Pietro Leone, NºUSP: 13874729
+
 public class TesteJan1 {
 
     private Cal myCal;  // Declare myCal here
