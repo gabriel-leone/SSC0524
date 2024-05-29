@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Session ambiente - NeoProteum</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">NeoProteum</a>
+  </div>
+</nav>
+
+<div class="container my-5">
+  <h1>Session ambiente</h1>
+  <div class="my-4">
+    <a test-id="mutants-link" class="btn btn-outline-primary" href="mutants/index.html">
+      View Mutants
+    </a>
+    <a test-id="mutated-files-link" class="btn btn-outline-primary" href="mutated-files/index.html">
+      View Files
+    </a>
+  </div>
+  
+  <div class="my-4">
+    <strong>
+      Mutation score:
+      <span test-id="mutation-score">88%</span>
+    </strong>
+    <div class="progress my-2" style="height: 3em">
+      <div class="progress-bar" style="width: 88%">88%</div>
+    </div>
+  </div>
+
+
+  <div class="row my-4">
+    <div class="col-md-6 col-lg-4">
+      <strong>ID</strong>
+      <br>
+      <span test-id="session-id">a310ad9f-9940-4b5d-bfaa-4f035519d250</span>
+    </div>
+    <div class="col-md-6 col-lg-4 py-2">
+      <strong>Name</strong>
+      <br>
+      <span test-id="session-name">ambiente</span>
+    </div>
+    <div class="col-md-6 col-lg-4 py-2">
+      <strong>Test case execution mode</strong>
+      <br>
+      <span test-id="session-test-case-execution-mode">EARLY_EXIT</span>
+    </div>
+    <div class="col-md-6 col-lg-4 py-2">
+      <strong>Base path</strong>
+      <br>
+      <span test-id="session-base-path">/home/ep2023/Desktop/ep2023</span>
+    </div>
+    <div class="col-md-6 col-lg-4 py-2">
+      <strong>Number of test cases</strong>
+      <br>
+      <span test-id="session-test-cases-size">195</span>
+    </div>
+    <div class="col-md-6 col-lg-4 py-2">
+      <strong>Number of mutants</strong>
+      <br>
+      <span test-id="session-mutants-size">371</span>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
