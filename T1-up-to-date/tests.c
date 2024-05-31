@@ -4985,6 +4985,408 @@ bool test_cc_array_remove_mutant_index_not_size() {
     return true;
 }
 
+// Teste para matar mutante: ++ar->size;
+bool test_cc_array_add_mutant_pre_increment_size1() {
+    CC_Array *ar;
+    ASSERT_CC_OK(cc_array_new(&ar));
+
+    int data1 = 42, data2 = 43;
+    
+    // Adicionar primeiro elemento e verificar tamanho
+    ASSERT_CC_OK(cc_array_add(ar, &data1));
+    ASSERT_EQ(1, cc_array_size(ar));
+
+    // Adicionar segundo elemento e verificar tamanho
+    ASSERT_CC_OK(cc_array_add(ar, &data2));
+    ASSERT_EQ(2, cc_array_size(ar));
+
+    // Verificar se os elementos foram adicionados corretamente
+    void *result;
+    ASSERT_CC_OK(cc_array_get_at(ar, 0, &result));
+    ASSERT_EQ(&data1, result);
+    ASSERT_CC_OK(cc_array_get_at(ar, 1, &result));
+    ASSERT_EQ(&data2, result);
+
+    cc_array_destroy(ar);
+    return true;
+}
+
+// Teste para matar mutante: if ((ar->size == 0 && index >= 0) || index > (ar->size - 1))
+bool test_cc_array_add_at_mutant_index_greater_equal_zero1() {
+    CC_Array *ar;
+    ASSERT_CC_OK(cc_array_new(&ar));
+
+    // Tentativa de adicionar elemento em um índice diferente de 0 em um array vazio
+    int data = 42;
+    ASSERT_EQ(CC_ERR_OUT_OF_RANGE, cc_array_add_at(ar, &data, 1));
+
+    // Adicionar elemento na posição 0 em um array vazio
+    ASSERT_CC_OK(cc_array_add_at(ar, &data, 0));
+    ASSERT_EQ(1, cc_array_size(ar));
+
+    // Verificar se o elemento foi adicionado corretamente
+    void *result;
+    ASSERT_CC_OK(cc_array_get_at(ar, 0, &result));
+    ASSERT_EQ(&data, result);
+
+    cc_array_destroy(ar);
+    return true;
+}
+
+// Teste para matar mutante: if ((ar->size == 0 && index != 0) || index > (ar->size - 0))
+bool test_cc_array_add_at_mutant_index_greater_size_minus_zero1() {
+    CC_Array *ar;
+    ASSERT_CC_OK(cc_array_new(&ar));
+
+    // Adicionar alguns elementos para testar o índice fora do intervalo
+    int data1 = 42, data2 = 43, data3 = 44;
+    ASSERT_CC_OK(cc_array_add_at(ar, &data1, 0));
+    ASSERT_CC_OK(cc_array_add_at(ar, &data2, 1));
+
+    // Tentativa de adicionar elemento em um índice fora do intervalo
+    ASSERT_EQ(CC_ERR_OUT_OF_RANGE, cc_array_add_at(ar, &data3, 3));
+
+    // Adicionar elemento em um índice válido e verificar
+    ASSERT_CC_OK(cc_array_add_at(ar, &data3, 2));
+    ASSERT_EQ(3, cc_array_size(ar));
+
+    // Verificar se os elementos foram adicionados corretamente
+    void *result;
+    ASSERT_CC_OK(cc_array_get_at(ar, 0, &result));
+    ASSERT_EQ(&data1, result);
+    ASSERT_CC_OK(cc_array_get_at(ar, 1, &result));
+    ASSERT_EQ(&data2, result);
+    ASSERT_CC_OK(cc_array_get_at(ar, 2, &result));
+    ASSERT_EQ(&data3, result);
+
+    cc_array_destroy(ar);
+    return true;
+}
+
+
+// Teste para matar mutante: if (index != ar->size) {
+bool test_cc_array_remove_mutant_index_not_size1() {
+    CC_Array *ar;
+    ASSERT_CC_OK(cc_array_new(&ar));
+
+    // Adicionar alguns elementos
+    int data1 = 42, data2 = 43, data3 = 44;
+    ASSERT_CC_OK(cc_array_add(ar, &data1));
+    ASSERT_CC_OK(cc_array_add(ar, &data2));
+    ASSERT_CC_OK(cc_array_add(ar, &data3));
+
+    // Remover último elemento e verificar mutante
+    void *out;
+    ASSERT_CC_OK(cc_array_remove(ar, &data3, &out));
+    ASSERT_EQ(&data3, out);
+
+    // Verificar o tamanho e os elementos restantes
+    ASSERT_EQ(2, cc_array_size(ar));
+    void *result;
+    ASSERT_CC_OK(cc_array_get_at(ar, 0, &result));
+    ASSERT_EQ(&data1, result);
+    ASSERT_CC_OK(cc_array_get_at(ar, 1, &result));
+    ASSERT_EQ(&data2, result);
+
+    // Remover elemento do meio e verificar mutante
+    ASSERT_CC_OK(cc_array_remove(ar, &data2, &out));
+    ASSERT_EQ(&data2, out);
+
+    // Verificar o tamanho e os elementos restantes
+    ASSERT_EQ(1, cc_array_size(ar));
+    ASSERT_CC_OK(cc_array_get_at(ar, 0, &result));
+    ASSERT_EQ(&data1, result);
+
+    cc_array_destroy(ar);
+    return true;
+}
+
+// Teste para matar mutante: if (index != ar->size)
+bool test_cc_array_remove_at_mutant_index_not_size() {
+    CC_Array *ar;
+    ASSERT_CC_OK(cc_array_new(&ar));
+
+    // Adicionar alguns elementos
+    int data1 = 42, data2 = 43, data3 = 44;
+    ASSERT_CC_OK(cc_array_add(ar, &data1));
+    ASSERT_CC_OK(cc_array_add(ar, &data2));
+    ASSERT_CC_OK(cc_array_add(ar, &data3));
+
+    // Remover último elemento e verificar mutante
+    void *out;
+    ASSERT_CC_OK(cc_array_remove_at(ar, 2, &out));
+    ASSERT_EQ(&data3, out);
+
+    // Verificar o tamanho e os elementos restantes
+    ASSERT_EQ(2, cc_array_size(ar));
+    void *result;
+    ASSERT_CC_OK(cc_array_get_at(ar, 0, &result));
+    ASSERT_EQ(&data1, result);
+    ASSERT_CC_OK(cc_array_get_at(ar, 1, &result));
+    ASSERT_EQ(&data2, result);
+
+    // Remover elemento do meio e verificar mutante
+    ASSERT_CC_OK(cc_array_remove_at(ar, 1, &out));
+    ASSERT_EQ(&data2, out);
+
+    // Verificar o tamanho e os elementos restantes
+    ASSERT_EQ(1, cc_array_size(ar));
+    ASSERT_CC_OK(cc_array_get_at(ar, 0, &result));
+    ASSERT_EQ(&data1, result);
+
+    // Remover o primeiro elemento e verificar mutante
+    ASSERT_CC_OK(cc_array_remove_at(ar, 0, &out));
+    ASSERT_EQ(&data1, out);
+
+    // Verificar que o array está vazio
+    ASSERT_EQ(0, cc_array_size(ar));
+
+    cc_array_destroy(ar);
+    return true;
+}
+
+// Teste para matar mutante: if (ar->size <= 0)
+bool test_cc_array_reverse_mutant_size_less_equal_zero1() {
+    CC_Array *ar;
+    ASSERT_CC_OK(cc_array_new(&ar));
+
+    // Verificar reversão de array vazio
+    cc_array_reverse(ar);
+    ASSERT_EQ(0, cc_array_size(ar));
+
+    // Adicionar elementos e verificar reversão
+    int data1 = 42, data2 = 43, data3 = 44;
+    ASSERT_CC_OK(cc_array_add(ar, &data1));
+    ASSERT_CC_OK(cc_array_add(ar, &data2));
+    ASSERT_CC_OK(cc_array_add(ar, &data3));
+
+    cc_array_reverse(ar);
+
+    void *result;
+    ASSERT_CC_OK(cc_array_get_at(ar, 0, &result));
+    ASSERT_EQ(&data3, result);
+    ASSERT_CC_OK(cc_array_get_at(ar, 1, &result));
+    ASSERT_EQ(&data2, result);
+    ASSERT_CC_OK(cc_array_get_at(ar, 2, &result));
+    ASSERT_EQ(&data1, result);
+
+    cc_array_destroy(ar);
+    return true;
+}
+
+// Teste para matar mutante: if (ar->size == 1)
+bool test_cc_array_reverse_mutant_size_equal_one1() {
+    CC_Array *ar;
+    ASSERT_CC_OK(cc_array_new(&ar));
+
+    // Adicionar um único elemento
+    int data1 = 42;
+    ASSERT_CC_OK(cc_array_add(ar, &data1));
+
+    // Verificar reversão de array com um único elemento
+    cc_array_reverse(ar);
+    ASSERT_EQ(1, cc_array_size(ar));
+
+    void *result;
+    ASSERT_CC_OK(cc_array_get_at(ar, 0, &result));
+    ASSERT_EQ(&data1, result);
+
+    cc_array_destroy(ar);
+    return true;
+}
+
+// Função de redução de exemplo
+void sum_reduce(void* a, void* b, void* result) {
+    if (b == NULL) {
+        *(int*)result = *(int*)a;
+    } else {
+        *(int*)result = *(int*)a + *(int*)b;
+    }
+}
+
+// Teste para matar mutante: if (ar->size > 0)
+bool test_cc_array_reduce_mutant_size_greater_than_zero() {
+    CC_Array *ar;
+    ASSERT_CC_OK(cc_array_new(&ar));
+
+    // Verificar redução em array vazio
+    int result = 0;
+    cc_array_reduce(ar, sum_reduce, &result);
+    ASSERT_EQ(0, result);
+
+    // Adicionar um único elemento
+    int data1 = 42;
+    ASSERT_CC_OK(cc_array_add(ar, &data1));
+
+    // Verificar redução em array com um único elemento
+    result = 0;
+    cc_array_reduce(ar, sum_reduce, &result);
+    ASSERT_EQ(42, result);
+
+    // Adicionar mais elementos
+    int data2 = 43, data3 = 44;
+    ASSERT_CC_OK(cc_array_add(ar, &data2));
+    ASSERT_CC_OK(cc_array_add(ar, &data3));
+
+    // Verificar redução em array com múltiplos elementos
+    result = 0;
+    cc_array_reduce(ar, sum_reduce, &result);
+    ASSERT_EQ(129, result);
+
+    cc_array_destroy(ar);
+    return true;
+}
+
+// Teste para matar mutante: if (ar->size)
+bool test_cc_array_reduce_mutant_size() {
+    CC_Array *ar;
+    ASSERT_CC_OK(cc_array_new(&ar));
+
+    // Verificar redução em array vazio
+    int result = 0;
+    cc_array_reduce(ar, sum_reduce, &result);
+    ASSERT_EQ(0, result);
+
+    // Adicionar um único elemento
+    int data1 = 42;
+    ASSERT_CC_OK(cc_array_add(ar, &data1));
+
+    // Verificar redução em array com um único elemento
+    result = 0;
+    cc_array_reduce(ar, sum_reduce, &result);
+    ASSERT_EQ(42, result);
+
+    // Adicionar mais elementos
+    int data2 = 43, data3 = 44;
+    ASSERT_CC_OK(cc_array_add(ar, &data2));
+    ASSERT_CC_OK(cc_array_add(ar, &data3));
+
+    // Verificar redução em array com múltiplos elementos
+    result = 0;
+    cc_array_reduce(ar, sum_reduce, &result);
+    ASSERT_EQ(129, result);
+
+    cc_array_destroy(ar);
+    return true;
+}
+
+// Teste para matar mutante: if ((ar1->size == ar1->capacity && (expand_capacity(ar1) != CC_OK)) &&
+bool test_cc_array_zip_iter_add_mutant_and() {
+    CC_Array *ar1, *ar2;
+    ASSERT_CC_OK(cc_array_new(&ar1));
+    ASSERT_CC_OK(cc_array_new(&ar2));
+
+    // Adiciona alguns elementos aos arrays
+    int data1[] = {1, 2, 3};
+    int data2[] = {4, 5, 6};
+    for (size_t i = 0; i < sizeof(data1) / sizeof(data1[0]); i++) {
+        ASSERT_CC_OK(cc_array_add(ar1, &data1[i]));
+        ASSERT_CC_OK(cc_array_add(ar2, &data2[i]));
+    }
+
+    CC_ArrayZipIter iter;
+    cc_array_zip_iter_init(&iter, ar1, ar2);
+
+    // Aumenta a capacidade dos arrays para provocar a expansão
+    ar1->capacity = 2;
+    ar2->capacity = 2;
+
+    // Tenta adicionar novos elementos
+    int new_data1 = 7, new_data2 = 8;
+    ASSERT_EQ(CC_ERR_ALLOC, cc_array_zip_iter_add(&iter, &new_data1, &new_data2));
+
+    cc_array_destroy(ar1);
+    cc_array_destroy(ar2);
+    return true;
+}
+
+// Teste para matar o mutante: if ((iter->index - 1) >= iter->ar1->size || (iter->index / 1) >= iter->ar2->size)
+bool test_cc_array_zip_iter_replace_mutant_div() {
+    CC_Array *ar1, *ar2;
+    ASSERT_CC_OK(cc_array_new(&ar1));
+    ASSERT_CC_OK(cc_array_new(&ar2));
+
+    // Adiciona alguns elementos aos arrays
+    int data1[] = {1, 2, 3};
+    int data2[] = {4, 5, 6};
+    for (size_t i = 0; i < sizeof(data1) / sizeof(data1[0]); i++) {
+        ASSERT_CC_OK(cc_array_add(ar1, &data1[i]));
+        ASSERT_CC_OK(cc_array_add(ar2, &data2[i]));
+    }
+
+    CC_ArrayZipIter iter;
+    cc_array_zip_iter_init(&iter, ar1, ar2);
+
+    // Move o iterador para um índice adequado para testar os mutantes
+    iter.index = 4; // O índice 4 é fora do intervalo de ar1 e ar2
+
+    // Testa os mutantes
+    void *out1, *out2;
+    ASSERT_EQ(CC_ERR_OUT_OF_RANGE, cc_array_zip_iter_replace(&iter, &data1[0], &data2[0], &out1, &out2));
+
+    cc_array_destroy(ar1);
+    cc_array_destroy(ar2);
+    return true;
+}
+
+// Teste para matar o mutante: if ((iter->index - 1) >= iter->ar1->size || (iter->index % 1) >= iter->ar2->size)
+bool test_cc_array_zip_iter_replace_mutant_mod() {
+    CC_Array *ar1, *ar2;
+    ASSERT_CC_OK(cc_array_new(&ar1));
+    ASSERT_CC_OK(cc_array_new(&ar2));
+
+    // Adiciona alguns elementos aos arrays
+    int data1[] = {1, 2, 3};
+    int data2[] = {4, 5, 6};
+    for (size_t i = 0; i < sizeof(data1) / sizeof(data1[0]); i++) {
+        ASSERT_CC_OK(cc_array_add(ar1, &data1[i]));
+        ASSERT_CC_OK(cc_array_add(ar2, &data2[i]));
+    }
+
+    CC_ArrayZipIter iter;
+    cc_array_zip_iter_init(&iter, ar1, ar2);
+
+    // Move o iterador para um índice adequado para testar os mutantes
+    iter.index = 4; // O índice 4 é fora do intervalo de ar1 e ar2
+
+    // Testa os mutantes
+    void *out1, *out2;
+    ASSERT_EQ(CC_ERR_OUT_OF_RANGE, cc_array_zip_iter_replace(&iter, &data1[0], &data2[0], &out1, &out2));
+
+    cc_array_destroy(ar1);
+    cc_array_destroy(ar2);
+    return true;
+}
+
+// Teste para matar o mutante: if ((iter->index) >= iter->ar1->size || (iter->index - 1) >= iter->ar2->size)
+bool test_cc_array_zip_iter_replace_mutant_no_subtract() {
+    CC_Array *ar1, *ar2;
+    ASSERT_CC_OK(cc_array_new(&ar1));
+    ASSERT_CC_OK(cc_array_new(&ar2));
+
+    // Adiciona alguns elementos aos arrays
+    int data1[] = {1, 2, 3};
+    int data2[] = {4, 5, 6};
+    for (size_t i = 0; i < sizeof(data1) / sizeof(data1[0]); i++) {
+        ASSERT_CC_OK(cc_array_add(ar1, &data1[i]));
+        ASSERT_CC_OK(cc_array_add(ar2, &data2[i]));
+    }
+
+    CC_ArrayZipIter iter;
+    cc_array_zip_iter_init(&iter, ar1, ar2);
+
+    // Move o iterador para um índice adequado para testar os mutantes
+    iter.index = 3; // O índice 3 é fora do intervalo de ar1 e ar2
+
+    // Testa os mutantes
+    void *out1, *out2;
+    ASSERT_EQ(CC_ERR_OUT_OF_RANGE, cc_array_zip_iter_replace(&iter, &data1[0], &data2[0], &out1, &out2));
+
+    cc_array_destroy(ar1);
+    cc_array_destroy(ar2);
+    return true;
+}
+
 test_t TESTS[] = {
     &test_cc_array_new_conf_valid_conf,
     &test_cc_array_new_conf_exp_factor_default,
@@ -5195,16 +5597,34 @@ test_t TESTS[] = {
     &test_zip_iter_next_mutant_index_mod_one,
     &test_zip_iter_next_mutant_index_plus_one_ar2,
     &test_zip_iter_next_mutant_index_times_one,
-    test_zip_iter_next_mutant_index_minus_zero,
-    test_zip_iter_next_mutant_index_no_change_ar2,
-    test_zip_iter_next_mutant_index_equal_ar2_size,
-    test_cc_array_reverse_mutant_size_less_equal_zero,
-    test_cc_array_reverse_mutant_size_equal_one,
-    test_cc_array_add_mutant_status_greater_equal_CC_OK,
-    test_cc_array_add_mutant_pre_increment_size,
-    test_cc_array_add_at_mutant_index_greater_equal_zero,
-    test_cc_array_add_at_mutant_index_greater_size_minus_zero,
-    test_cc_array_remove_mutant_index_not_size_plus_one,
-    test_cc_array_remove_mutant_index_not_size,
+    &test_zip_iter_next_mutant_index_minus_zero,
+    &test_zip_iter_next_mutant_index_no_change_ar2,
+    &test_zip_iter_next_mutant_index_equal_ar2_size,
+    &test_cc_array_reverse_mutant_size_less_equal_zero,
+    &test_cc_array_reverse_mutant_size_equal_one,
+    &test_cc_array_add_mutant_status_greater_equal_CC_OK,
+    &test_cc_array_add_mutant_pre_increment_size,
+    &test_cc_array_add_at_mutant_index_greater_equal_zero,
+    &test_cc_array_add_at_mutant_index_greater_size_minus_zero,
+    &test_cc_array_remove_mutant_index_not_size_plus_one,
+    &test_cc_array_remove_mutant_index_not_size,
+    &test_cc_array_add_mutant_pre_increment_size,
+    &test_cc_array_add_at_mutant_index_greater_equal_zero,
+    &test_cc_array_add_at_mutant_index_greater_size_minus_zero,
+    &test_cc_array_remove_mutant_index_not_size_plus_one,
+    &test_cc_array_remove_mutant_index_not_size,
+    &test_cc_array_add_mutant_pre_increment_size1,
+    &test_cc_array_add_at_mutant_index_greater_equal_zero1,
+    &test_cc_array_add_at_mutant_index_greater_size_minus_zero1,
+    &test_cc_array_remove_mutant_index_not_size1,
+    &test_cc_array_remove_at_mutant_index_not_size,
+    &test_cc_array_reverse_mutant_size_less_equal_zero1,
+    &test_cc_array_reverse_mutant_size_equal_one1,
+    &test_cc_array_reduce_mutant_size_greater_than_zero,
+    &test_cc_array_reduce_mutant_size,
+    &test_cc_array_zip_iter_add_mutant_and,
+    &test_cc_array_zip_iter_replace_mutant_div,
+    &test_cc_array_zip_iter_replace_mutant_mod,
+    &test_cc_array_zip_iter_replace_mutant_no_subtract,
     NULL
 };
